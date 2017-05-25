@@ -165,6 +165,10 @@ DEFAULT_SERVER_PORT = 5050
 # Enable CSRF protection?
 CSRF_ENABLED = True
 
+# Enable override of the schema used in URL generation according to the
+# `HTTP_X_FORWARDED_PROTO` header of incoming requests.
+SCHEME_OVERRIDE_ENABLED = True
+
 # Hashing algorithm used for password storage
 SECURITY_PASSWORD_HASH = 'pbkdf2_sha512'
 

@@ -494,6 +494,20 @@ def create_app(app_name=None):
         }
 
     ##########################################################################
+    # HTTP_X_FORWARDED_PROTO handling: allows PgAdmin to be accessed behind
+    # an SSL-terminating proxy.
+    ##########################################################################
+    if config.SCHEME_OVERRIDE_ENABLED:
+        def read_request_scheme(app):
+            def wrapper(environ, start_response):
+                scheme = environ.get('HTTP_X_FORWARDED_PROTO')
+                if scheme:
+                    environ['wsgi.url_scheme'] = scheme
+                return app(environ, start_response)
+            return wrapper
+        app = read_request_scheme(app)
+
+    ##########################################################################
     # All done!
     ##########################################################################
     app.logger.debug('URL map: %s' % app.url_map)
